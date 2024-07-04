@@ -28,6 +28,29 @@ class Softmax:
         self.output = exp_values/np.sum(exp_values, axis=1, keepdims=True)
 
 
+class Loss:
+
+    def calculate(self, output, y):
+            sample_losses = self.forward(output, y)
+            data_loss = np.mean(sample_losses)
+            return data_loss
+
+
+class Loss_categoricalCrossentrophy(Loss):
+    def forward(self, y_pred, y_true):
+        sample = len(y_pred)
+        y_pred_clipped = np.clip(y_pred, 1e-7, 1-1e-7)
+
+        if len(y_true.shape) == 1:
+            correct_confidence = y_pred_clipped[range(sample),y_true]
+
+        elif len(y_true.shape) == 2:
+            correct_confidence = np.sum(y_pred_clipped*y_true,axis=1)
+
+        negative_log_likelihoods = -np.log(correct_confidence)
+        return negative_log_likelihoods
+
+
 layer1 = LayerDense(2,5)
 layer1.forward_prop(X)
 relu = ReLU()
@@ -36,3 +59,6 @@ print(relu.output)
 softmax = Softmax()
 softmax.forward(layer1.output)
 print(softmax.output)
+loss_function = Loss_categoricalCrossentrophy()
+loss = loss_function.calculate(softmax.output, y)
+print("Loss: ",loss)
