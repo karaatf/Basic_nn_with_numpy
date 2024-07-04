@@ -1,10 +1,13 @@
 import nnfs
 import numpy as np
+import matplotlib.pyplot as plt
 from nnfs.datasets import spiral_data
 nnfs.init()
 
-X, y = spiral_data(100,2)
+X, y = spiral_data(100,3)
 
+plt.scatter(X[:,0], X[:,1], c=y, s=40, cmap="brg")
+plt.show()
 
 class LayerDense:
 
@@ -61,4 +64,4 @@ softmax.forward(layer1.output)
 print(softmax.output)
 loss_function = Loss_categoricalCrossentrophy()
 loss = loss_function.calculate(softmax.output, y)
-print("Loss: ",loss)
+
