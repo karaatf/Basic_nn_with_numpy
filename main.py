@@ -1,5 +1,6 @@
 import numpy as np
 from NN import OneHotMaker,DenseLayer, dReLU, backward_prop, parameterChange, train
+
 #Burada kerası mnist data setini daha rahat kullanmak için kullanıyoruz
 from keras.datasets import mnist
 m=10000
